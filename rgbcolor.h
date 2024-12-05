@@ -4,6 +4,7 @@
 class RGBColor
 {
 public:
+    RGBColor();
     RGBColor(unsigned char _r, unsigned char _g, unsigned char _b);
     unsigned char getR();
     unsigned char getG();
