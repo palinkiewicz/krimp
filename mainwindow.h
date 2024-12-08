@@ -19,14 +19,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-// private slots:
-//     void on_actionOpen_triggered();
-//     void on_actionSave_triggered();
+private slots:
+    void wheelEvent(QWheelEvent* event);
 
 private:
     void updateImageDisplay();
     void saveImage();
     void openImage();
+    void zoomIn();
+    void zoomOut();
     Ui::MainWindow *ui;
     QImage *image;
     QLabel *imageLabel;

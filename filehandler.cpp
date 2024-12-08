@@ -12,7 +12,6 @@ bool FileHandler::savePpm(std::string path, QImage* qImage) {
         return false;
     }
 
-    // Ensure QImage is in RGB888 format (compatible with PPM)
     QImage imageToSave = qImage->convertToFormat(QImage::Format_RGB888);
 
     std::ofstream outFile(path, std::ios::binary);
@@ -21,11 +20,9 @@ bool FileHandler::savePpm(std::string path, QImage* qImage) {
         return false;
     }
 
-    // Write PPM header
     outFile << "P6\n"
             << imageToSave.width() << " " << imageToSave.height() << "\n255\n";
 
-    // Write pixel data
     for (int y = 0; y < imageToSave.height(); ++y) {
         for (int x = 0; x < imageToSave.width(); ++x) {
             QRgb pixel = imageToSave.pixel(x, y);
@@ -48,7 +45,6 @@ QImage* FileHandler::loadPpm(std::string path) {
         throw std::runtime_error("Error: Unable to open file for reading: " + path);
     }
 
-    // Read PPM header
     std::string magicNumber;
     inFile >> magicNumber;
     if (magicNumber != "P6") {
@@ -57,13 +53,12 @@ QImage* FileHandler::loadPpm(std::string path) {
 
     int width, height, maxColorValue;
     inFile >> width >> height >> maxColorValue;
-    inFile.ignore(); // Consume the single whitespace or newline after the header
+    inFile.ignore();
 
     if (maxColorValue != 255) {
         throw std::runtime_error("Error: Only 8-bit PPM files are supported.");
     }
 
-    // Create QImage to hold pixel data
     QImage* qImage = new QImage(width, height, QImage::Format_RGB888);
 
     for (int y = 0; y < height; ++y) {
