@@ -100,14 +100,14 @@ void MainWindow::zoomIn() {
     zoomFactor *= 1.1;
     updateImageDisplay();
 
-    statusBar()->showMessage(QString("Zoom: %1%").arg(qRound(zoomFactor * 100)));
+    statusBar()->showMessage(tr("Zoom: %1%").arg(qRound(zoomFactor * 100)));
 }
 
 void MainWindow::zoomOut() {
     zoomFactor /= 1.1;
     updateImageDisplay();
 
-    statusBar()->showMessage(QString("Zoom: %1%").arg(qRound(zoomFactor * 100)));
+    statusBar()->showMessage(tr("Zoom: %1%").arg(qRound(zoomFactor * 100)));
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
@@ -135,23 +135,23 @@ void MainWindow::openBrightnessDialog() {
 void MainWindow::filterDesaturate() {
     im->desaturate(image);
     updateImageDisplay();
-    statusBar()->showMessage("Image desaturated.");
+    statusBar()->showMessage(tr("Image desaturated."));
 }
 
 void MainWindow::filterInvertColors() {
     im->invertColors(image);
     updateImageDisplay();
-    statusBar()->showMessage("Image's colors inverted.");
+    statusBar()->showMessage(tr("Image's colors inverted."));
 }
 
 void MainWindow::filterContrast(int contrast) {
     im->adjustContrast(image, contrast);
     updateImageDisplay();
-    statusBar()->showMessage("Image's contrast changed.");
+    statusBar()->showMessage(tr("Image's contrast changed."));
 }
 
 void MainWindow::filterBrightness(int brightness) {
     im->adjustBrightness(image, brightness);
     updateImageDisplay();
-    statusBar()->showMessage("Image's brightness changed.");
+    statusBar()->showMessage(tr("Image's brightness changed."));
 }
