@@ -13,3 +13,11 @@ Image::Image(unsigned short _sizeX, unsigned short _sizeY)
 
 Image::Image(unsigned short _sizeX, unsigned short _sizeY, RGBColor**& _pixels)
     : sizeX(_sizeX), sizeY(_sizeY), pixels(_pixels) {}
+
+unsigned short Image::getSizeX() {
+    return sizeX;
+}
+
+unsigned short Image::getSizeY() {
+    return sizeY;
+}
