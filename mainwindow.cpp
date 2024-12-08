@@ -51,10 +51,13 @@ void MainWindow::updateImageDisplay() {
         return;
     }
 
-    QPixmap pixmap = QPixmap::fromImage(*image).scaled(image->size() * zoomFactor, Qt::KeepAspectRatio, Qt::FastTransformation);
+    QSize imageSize = image->size() * zoomFactor;
+
+    QPixmap pixmap = QPixmap::fromImage(*image).scaled(imageSize, Qt::KeepAspectRatio, Qt::FastTransformation);
     imageLabel->setPixmap(pixmap);
 
-    resize(pixmap.size());
+    setMinimumSize(imageSize);
+    resize(imageSize);
 }
 
 void MainWindow::openImage() {
