@@ -37,9 +37,14 @@ private:
     void zoomIn();
     void zoomOut();
 
+    void openContrastDialog();
+    void openBrightnessDialog();
+
     ImageModifier *im;
     void filterDesaturate();
     void filterInvertColors();
+    void filterContrast(int contrast);
+    void filterBrightness(int brightness);
 };
 
 #endif // MAINWINDOW_H

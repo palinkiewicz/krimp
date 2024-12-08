@@ -3,6 +3,8 @@
 
 #include "filehandler.h"
 #include "imagemodifier.h"
+#include "contrastdialog.h"
+#include "brightnessdialog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -12,6 +14,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
+    setWindowTitle(tr("KRIMP"));
 
     image = nullptr;
 
@@ -35,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionDesaturation, &QAction::triggered, this, &MainWindow::filterDesaturate);
     connect(ui->actionColor_Invertion, &QAction::triggered, this, &MainWindow::filterInvertColors);
+    connect(ui->actionContrast, &QAction::triggered, this, &MainWindow::openContrastDialog);
+    connect(ui->actionBrightness, &QAction::triggered, this, &MainWindow::openBrightnessDialog);
 }
 
 MainWindow::~MainWindow() {
@@ -53,14 +58,14 @@ void MainWindow::updateImageDisplay() {
 }
 
 void MainWindow::openImage() {
-    std::string filePath = QFileDialog::getOpenFileName(
-        this, tr("Open Image"), "", tr("Binary PPM images (*.ppm)")).toStdString();
+    QString filePath = QFileDialog::getOpenFileName(
+        this, tr("Open Image"), "", tr("Binary PPM images (*.ppm)"));
 
-    if (filePath.empty()) {
+    if (filePath.isEmpty()) {
         return;
     }
 
-    image = fh->loadPpm(filePath);
+    image = fh->loadPpm(filePath.toStdString());
 
     zoomFactor = qMin(
         (double) imageLabel->size().height() / (double) image->size().height(),
@@ -68,6 +73,8 @@ void MainWindow::openImage() {
         );
 
     updateImageDisplay();
+
+    setWindowTitle(tr("KRIMP - %1").arg(QFileInfo(filePath).fileName()));
 }
 
 void MainWindow::saveImage() {
@@ -111,6 +118,19 @@ void MainWindow::wheelEvent(QWheelEvent *event) {
     }
 }
 
+// Dialogs
+void MainWindow::openContrastDialog() {
+    ContrastDialog *dialog = new ContrastDialog(this);
+    connect(dialog, &ContrastDialog::contrastChanged, this, &MainWindow::filterContrast);
+    dialog->exec();
+}
+
+void MainWindow::openBrightnessDialog() {
+    BrightnessDialog *dialog = new BrightnessDialog(this);
+    connect(dialog, &BrightnessDialog::brightnessChanged, this, &MainWindow::filterBrightness);
+    dialog->exec();
+}
+
 // Filters
 void MainWindow::filterDesaturate() {
     im->desaturate(image);
@@ -122,4 +142,16 @@ void MainWindow::filterInvertColors() {
     im->invertColors(image);
     updateImageDisplay();
     statusBar()->showMessage("Image's colors inverted.");
+}
+
+void MainWindow::filterContrast(int contrast) {
+    im->adjustContrast(image, contrast);
+    updateImageDisplay();
+    statusBar()->showMessage("Image's contrast changed.");
+}
+
+void MainWindow::filterBrightness(int brightness) {
+    im->adjustBrightness(image, brightness);
+    updateImageDisplay();
+    statusBar()->showMessage("Image's brightness changed.");
 }
