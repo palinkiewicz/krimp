@@ -30,7 +30,27 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
    </widget>
+   <widget class="QMenu" name="menuFilters">
+    <property name="title">
+     <string>Filters</string>
+    </property>
+    <widget class="QMenu" name="menuOther_Image">
+     <property name="title">
+      <string>Other Image</string>
+     </property>
+     <addaction name="actionSum"/>
+     <addaction name="actionSubtract"/>
+     <addaction name="actionMultiply"/>
+    </widget>
+    <addaction name="actionDesaturation"/>
+    <addaction name="actionColor_Invertion"/>
+    <addaction name="actionContrast"/>
+    <addaction name="actionBrightness"/>
+    <addaction name="actionSaturation"/>
+    <addaction name="menuOther_Image"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuFilters"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen">
@@ -53,6 +73,46 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionDesaturation">
+   <property name="text">
+    <string>Desaturate</string>
+   </property>
+  </action>
+  <action name="actionColor_Invertion">
+   <property name="text">
+    <string>Invert Colors</string>
+   </property>
+  </action>
+  <action name="actionContrast">
+   <property name="text">
+    <string>Contrast</string>
+   </property>
+  </action>
+  <action name="actionBrightness">
+   <property name="text">
+    <string>Brightness</string>
+   </property>
+  </action>
+  <action name="actionSaturation">
+   <property name="text">
+    <string>Saturation</string>
+   </property>
+  </action>
+  <action name="actionSum">
+   <property name="text">
+    <string>Sum</string>
+   </property>
+  </action>
+  <action name="actionSubtract">
+   <property name="text">
+    <string>Subtract</string>
+   </property>
+  </action>
+  <action name="actionMultiply">
+   <property name="text">
+    <string>Multiply</string>
    </property>
   </action>
  </widget>
