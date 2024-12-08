@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include "filehandler.h"
+#include "imagemodifier.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -26,8 +27,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openImage);
     connect(ui->actionSave, &QAction::triggered, this, &MainWindow::saveImage);
+
     connect(ui->actionZoom_In, &QAction::triggered, this, &MainWindow::zoomIn);
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::zoomOut);
+
+    connect(ui->actionDesaturation, &QAction::triggered, this, &MainWindow::filterDesaturate);
 }
 
 MainWindow::~MainWindow() {
@@ -83,6 +87,7 @@ void MainWindow::saveImage() {
     }
 }
 
+// Zooming
 void MainWindow::zoomIn() {
     zoomFactor *= 1.1;
     updateImageDisplay();
@@ -99,4 +104,10 @@ void MainWindow::wheelEvent(QWheelEvent *event) {
     } else {
         zoomOut();
     }
+}
+
+// Filters
+void MainWindow::filterDesaturate() {
+    im->desaturate(image);
+    updateImageDisplay();
 }

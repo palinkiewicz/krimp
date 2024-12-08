@@ -7,6 +7,7 @@
 #include <QPixmap>
 
 class FileHandler;
+class ImageModifier;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,16 +24,21 @@ private slots:
     void wheelEvent(QWheelEvent* event);
 
 private:
-    void updateImageDisplay();
-    void saveImage();
-    void openImage();
-    void zoomIn();
-    void zoomOut();
     Ui::MainWindow *ui;
     QImage *image;
     QLabel *imageLabel;
+
     FileHandler *fh;
+    void saveImage();
+    void openImage();
+    void updateImageDisplay();
+
     double zoomFactor;
+    void zoomIn();
+    void zoomOut();
+
+    ImageModifier *im;
+    void filterDesaturate();
 };
 
 #endif // MAINWINDOW_H

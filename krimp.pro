@@ -10,11 +10,13 @@ CONFIG += c++17
 
 SOURCES += \
     filehandler.cpp \
+    imagemodifier.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     filehandler.h \
+    imagemodifier.h \
     mainwindow.h
 
 FORMS += \

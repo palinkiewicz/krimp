@@ -7,7 +7,7 @@
 FileHandler::FileHandler() {}
 
 bool FileHandler::savePpm(std::string path, QImage* qImage) {
-    if (qImage->isNull()) {
+    if (qImage == nullptr || qImage->isNull()) {
         std::cerr << "Error: Invalid QImage provided for saving." << std::endl;
         return false;
     }
