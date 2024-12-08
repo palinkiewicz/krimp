@@ -39,6 +39,7 @@ private:
 
     ImageModifier *im;
     void filterDesaturate();
+    void filterInvertColors();
 };
 
 #endif // MAINWINDOW_H

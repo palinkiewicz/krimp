@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+    image = nullptr;
+
     imageLabel = new QLabel(this);
     imageLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
@@ -32,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionZoom_Out, &QAction::triggered, this, &MainWindow::zoomOut);
 
     connect(ui->actionDesaturation, &QAction::triggered, this, &MainWindow::filterDesaturate);
+    connect(ui->actionColor_Invertion, &QAction::triggered, this, &MainWindow::filterInvertColors);
 }
 
 MainWindow::~MainWindow() {
@@ -47,8 +50,6 @@ void MainWindow::updateImageDisplay() {
     imageLabel->setPixmap(pixmap);
 
     resize(pixmap.size());
-
-    statusBar()->showMessage(QString("Zoom: %1%").arg(qRound(zoomFactor * 100)));
 }
 
 void MainWindow::openImage() {
@@ -91,11 +92,15 @@ void MainWindow::saveImage() {
 void MainWindow::zoomIn() {
     zoomFactor *= 1.1;
     updateImageDisplay();
+
+    statusBar()->showMessage(QString("Zoom: %1%").arg(qRound(zoomFactor * 100)));
 }
 
 void MainWindow::zoomOut() {
     zoomFactor /= 1.1;
     updateImageDisplay();
+
+    statusBar()->showMessage(QString("Zoom: %1%").arg(qRound(zoomFactor * 100)));
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
@@ -110,4 +115,11 @@ void MainWindow::wheelEvent(QWheelEvent *event) {
 void MainWindow::filterDesaturate() {
     im->desaturate(image);
     updateImageDisplay();
+    statusBar()->showMessage("Image desaturated.");
+}
+
+void MainWindow::filterInvertColors() {
+    im->invertColors(image);
+    updateImageDisplay();
+    statusBar()->showMessage("Image's colors inverted.");
 }
