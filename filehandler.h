@@ -9,8 +9,8 @@ class FileHandler
 {
 public:
     FileHandler();
-    bool savePpm(std::string path, QImage& img);
-    QImage loadPpm(std::string path);
+    bool savePpm(std::string path, QImage* img);
+    QImage* loadPpm(std::string path);
 };
 
 #endif // FILEHANDLER_H

@@ -6,14 +6,14 @@
 
 FileHandler::FileHandler() {}
 
-bool FileHandler::savePpm(std::string path, QImage& qImage) {
-    if (qImage.isNull()) {
+bool FileHandler::savePpm(std::string path, QImage* qImage) {
+    if (qImage->isNull()) {
         std::cerr << "Error: Invalid QImage provided for saving." << std::endl;
         return false;
     }
 
     // Ensure QImage is in RGB888 format (compatible with PPM)
-    QImage imageToSave = qImage.convertToFormat(QImage::Format_RGB888);
+    QImage imageToSave = qImage->convertToFormat(QImage::Format_RGB888);
 
     std::ofstream outFile(path, std::ios::binary);
     if (!outFile.is_open()) {
@@ -42,7 +42,7 @@ bool FileHandler::savePpm(std::string path, QImage& qImage) {
     return true;
 }
 
-QImage FileHandler::loadPpm(std::string path) {
+QImage* FileHandler::loadPpm(std::string path) {
     std::ifstream inFile(path, std::ios::binary);
     if (!inFile.is_open()) {
         throw std::runtime_error("Error: Unable to open file for reading: " + path);
@@ -64,13 +64,13 @@ QImage FileHandler::loadPpm(std::string path) {
     }
 
     // Create QImage to hold pixel data
-    QImage qImage(width, height, QImage::Format_RGB888);
+    QImage* qImage = new QImage(width, height, QImage::Format_RGB888);
 
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
             unsigned char rgb[3];
             inFile.read(reinterpret_cast<char*>(rgb), sizeof(rgb));
-            qImage.setPixel(x, y, qRgb(rgb[0], rgb[1], rgb[2]));
+            qImage->setPixel(x, y, qRgb(rgb[0], rgb[1], rgb[2]));
         }
     }
 
