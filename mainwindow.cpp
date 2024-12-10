@@ -3,8 +3,10 @@
 
 #include "filehandler.h"
 #include "imagemodifier.h"
+
 #include "contrastdialog.h"
 #include "brightnessdialog.h"
+#include "saturationdialog.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -40,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionColor_Invertion, &QAction::triggered, this, &MainWindow::filterInvertColors);
     connect(ui->actionContrast, &QAction::triggered, this, &MainWindow::openContrastDialog);
     connect(ui->actionBrightness, &QAction::triggered, this, &MainWindow::openBrightnessDialog);
+    connect(ui->actionSaturation, &QAction::triggered, this, &MainWindow::openSaturationDialog);
 }
 
 MainWindow::~MainWindow() {
@@ -134,6 +137,12 @@ void MainWindow::openBrightnessDialog() {
     dialog->exec();
 }
 
+void MainWindow::openSaturationDialog() {
+    SaturationDialog *dialog = new SaturationDialog(this);
+    connect(dialog, &SaturationDialog::saturationChanged, this, &MainWindow::filterSaturation);
+    dialog->exec();
+}
+
 // Filters
 void MainWindow::filterDesaturate() {
     im->desaturate(image);
@@ -157,4 +166,10 @@ void MainWindow::filterBrightness(int brightness) {
     im->adjustBrightness(image, brightness);
     updateImageDisplay();
     statusBar()->showMessage(tr("Image's brightness changed."));
+}
+
+void MainWindow::filterSaturation(int saturation) {
+    im->adjustSaturation(image, saturation);
+    updateImageDisplay();
+    statusBar()->showMessage(tr("Image's saturation changed."));
 }

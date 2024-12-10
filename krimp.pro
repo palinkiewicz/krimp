@@ -14,14 +14,16 @@ SOURCES += \
     filehandler.cpp \
     imagemodifier.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    saturationdialog.cpp
 
 HEADERS += \
     brightnessdialog.h \
     contrastdialog.h \
     filehandler.h \
     imagemodifier.h \
-    mainwindow.h
+    mainwindow.h \
+    saturationdialog.h
 
 FORMS += \
     mainwindow.ui

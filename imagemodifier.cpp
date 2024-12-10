@@ -78,3 +78,24 @@ void ImageModifier::adjustBrightness(QImage* image, int brightness) {
         }
     }
 }
+
+void ImageModifier::adjustSaturation(QImage *image, int saturation) {
+    if (image == nullptr || image->isNull()) {
+        return;
+    }
+
+    for (int x = 0; x < image->width(); x++) {
+        for (int y = 0; y < image->height(); y++) {
+            QRgb pixel = image->pixel(x, y);
+            QColor color = QColor::fromRgb(pixel);
+
+            int h, s, l;
+            color.getHsl(&h, &s, &l);
+
+            s = qBound(0, s + (saturation * 255 / 100), 255);
+            color.setHsl(h, s, l);
+
+            image->setPixel(x, y, color.rgb());
+        }
+    }
+}

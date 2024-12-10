@@ -39,12 +39,14 @@ private:
 
     void openContrastDialog();
     void openBrightnessDialog();
+    void openSaturationDialog();
 
     ImageModifier *im;
     void filterDesaturate();
     void filterInvertColors();
     void filterContrast(int contrast);
     void filterBrightness(int brightness);
+    void filterSaturation(int saturation);
 };
 
 #endif // MAINWINDOW_H
