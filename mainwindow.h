@@ -40,6 +40,7 @@ private:
     void openContrastDialog();
     void openBrightnessDialog();
     void openSaturationDialog();
+    QImage *openSecondImage();
 
     ImageModifier *im;
     void filterDesaturate();
@@ -47,6 +48,10 @@ private:
     void filterContrast(int contrast);
     void filterBrightness(int brightness);
     void filterSaturation(int saturation);
+    void filterSumImagesTrunc();
+    void filterSumImagesHalf();
+    void filterSubtractImages();
+    void filterMultiplyImages();
 };
 
 #endif // MAINWINDOW_H

@@ -99,3 +99,48 @@ void ImageModifier::adjustSaturation(QImage *image, int saturation) {
         }
     }
 }
+
+void ImageModifier::sumImages(QImage* image1, QImage* image2, double multiplier) {
+    for (int x = 0; x < image1->width(); x++) {
+        for (int y = 0; y < image1->height(); y++) {
+            QRgb pixel1 = image1->pixel(x, y);
+            QRgb pixel2 = image2->pixel(x, y);
+
+            int r = trunc(multiplier * (double) (qRed(pixel1) + qRed(pixel2)));
+            int g = trunc(multiplier * (double) (qGreen(pixel1) + qGreen(pixel2)));
+            int b = trunc(multiplier * (double) (qBlue(pixel1) + qBlue(pixel2)));
+
+            image1->setPixel(x, y, qRgb(r, g, b));
+        }
+    }
+}
+
+void ImageModifier::subtractImages(QImage* image1, QImage* image2) {
+    for (int x = 0; x < image1->width(); x++) {
+        for (int y = 0; y < image1->height(); y++) {
+            QRgb pixel1 = image1->pixel(x, y);
+            QRgb pixel2 = image2->pixel(x, y);
+
+            int r = trunc(qRed(pixel1) - qRed(pixel2));
+            int g = trunc(qGreen(pixel1) - qGreen(pixel2));
+            int b = trunc(qBlue(pixel1) - qBlue(pixel2));
+
+            image1->setPixel(x, y, qRgb(r, g, b));
+        }
+    }
+}
+
+void ImageModifier::multiplyImages(QImage* image1, QImage* image2) {
+    for (int x = 0; x < image1->width(); x++) {
+        for (int y = 0; y < image1->height(); y++) {
+            QRgb pixel1 = image1->pixel(x, y);
+            QRgb pixel2 = image2->pixel(x, y);
+
+            int r = trunc((qRed(pixel1) * qRed(pixel2)) / 255);
+            int g = trunc((qGreen(pixel1) * qGreen(pixel2)) / 255);
+            int b = trunc((qBlue(pixel1) * qBlue(pixel2)) / 255);
+
+            image1->setPixel(x, y, qRgb(r, g, b));
+        }
+    }
+}

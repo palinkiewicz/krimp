@@ -43,6 +43,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionContrast, &QAction::triggered, this, &MainWindow::openContrastDialog);
     connect(ui->actionBrightness, &QAction::triggered, this, &MainWindow::openBrightnessDialog);
     connect(ui->actionSaturation, &QAction::triggered, this, &MainWindow::openSaturationDialog);
+    connect(ui->actionSum, &QAction::triggered, this, &MainWindow::filterSumImagesTrunc);
+    connect(ui->actionSum_half, &QAction::triggered, this, &MainWindow::filterSumImagesHalf);
+    connect(ui->actionSubtract, &QAction::triggered, this, &MainWindow::filterSubtractImages);
+    connect(ui->actionMultiply, &QAction::triggered, this, &MainWindow::filterMultiplyImages);
 }
 
 MainWindow::~MainWindow() {
@@ -143,6 +147,17 @@ void MainWindow::openSaturationDialog() {
     dialog->exec();
 }
 
+QImage* MainWindow::openSecondImage() {
+    QString filePath = QFileDialog::getOpenFileName(
+        this, tr("Open Image"), "", tr("Binary PPM images (*.ppm)"));
+
+    if (filePath.isEmpty()) {
+        return nullptr;
+    }
+
+    return new QImage(fh->loadPpm(filePath.toStdString())->scaled(image->size(), Qt::IgnoreAspectRatio, Qt::FastTransformation));
+}
+
 // Filters
 void MainWindow::filterDesaturate() {
     im->desaturate(image);
@@ -172,4 +187,32 @@ void MainWindow::filterSaturation(int saturation) {
     im->adjustSaturation(image, saturation);
     updateImageDisplay();
     statusBar()->showMessage(tr("Image's saturation changed."));
+}
+
+void MainWindow::filterSumImagesTrunc() {
+    QImage* secondImage = openSecondImage();
+    im->sumImages(image, secondImage, 1.0);
+    updateImageDisplay();
+    statusBar()->showMessage(tr("Images summed using truncate method."));
+}
+
+void MainWindow::filterSumImagesHalf() {
+    QImage* secondImage = openSecondImage();
+    im->sumImages(image, secondImage, 0.5);
+    updateImageDisplay();
+    statusBar()->showMessage(tr("Images summed using half method."));
+}
+
+void MainWindow::filterSubtractImages() {
+    QImage* secondImage = openSecondImage();
+    im->subtractImages(image, secondImage);
+    updateImageDisplay();
+    statusBar()->showMessage(tr("Images subtracted."));
+}
+
+void MainWindow::filterMultiplyImages() {
+    QImage* secondImage = openSecondImage();
+    im->multiplyImages(image, secondImage);
+    updateImageDisplay();
+    statusBar()->showMessage(tr("Images multiplied."));
 }

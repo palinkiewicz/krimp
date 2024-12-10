@@ -39,6 +39,7 @@
       <string>Other Image</string>
      </property>
      <addaction name="actionSum"/>
+     <addaction name="actionSum_half"/>
      <addaction name="actionSubtract"/>
      <addaction name="actionMultiply"/>
     </widget>
@@ -131,7 +132,7 @@
   </action>
   <action name="actionSum">
    <property name="text">
-    <string>Sum</string>
+    <string>Sum (trunc)</string>
    </property>
   </action>
   <action name="actionSubtract">
@@ -164,6 +165,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionSum_half">
+   <property name="text">
+    <string>Sum (half)</string>
    </property>
   </action>
  </widget>
