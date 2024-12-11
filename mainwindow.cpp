@@ -51,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete image;
+    delete imageLabel;
 }
 
 void MainWindow::updateImageDisplay() {
@@ -133,18 +135,21 @@ void MainWindow::openContrastDialog() {
     ContrastDialog *dialog = new ContrastDialog(this);
     connect(dialog, &ContrastDialog::contrastChanged, this, &MainWindow::filterContrast);
     dialog->exec();
+    delete dialog;
 }
 
 void MainWindow::openBrightnessDialog() {
     BrightnessDialog *dialog = new BrightnessDialog(this);
     connect(dialog, &BrightnessDialog::brightnessChanged, this, &MainWindow::filterBrightness);
     dialog->exec();
+    delete dialog;
 }
 
 void MainWindow::openSaturationDialog() {
     SaturationDialog *dialog = new SaturationDialog(this);
     connect(dialog, &SaturationDialog::saturationChanged, this, &MainWindow::filterSaturation);
     dialog->exec();
+    delete dialog;
 }
 
 QImage* MainWindow::openSecondImage() {
@@ -194,6 +199,7 @@ void MainWindow::filterSumImagesTrunc() {
     im->sumImages(image, secondImage, 1.0);
     updateImageDisplay();
     statusBar()->showMessage(tr("Images summed using truncate method."));
+    delete secondImage;
 }
 
 void MainWindow::filterSumImagesHalf() {
@@ -201,6 +207,7 @@ void MainWindow::filterSumImagesHalf() {
     im->sumImages(image, secondImage, 0.5);
     updateImageDisplay();
     statusBar()->showMessage(tr("Images summed using half method."));
+    delete secondImage;
 }
 
 void MainWindow::filterSubtractImages() {
@@ -208,6 +215,7 @@ void MainWindow::filterSubtractImages() {
     im->subtractImages(image, secondImage);
     updateImageDisplay();
     statusBar()->showMessage(tr("Images subtracted."));
+    delete secondImage;
 }
 
 void MainWindow::filterMultiplyImages() {
@@ -215,4 +223,5 @@ void MainWindow::filterMultiplyImages() {
     im->multiplyImages(image, secondImage);
     updateImageDisplay();
     statusBar()->showMessage(tr("Images multiplied."));
+    delete secondImage;
 }

@@ -40,7 +40,7 @@ private:
     void openContrastDialog();
     void openBrightnessDialog();
     void openSaturationDialog();
-    QImage *openSecondImage();
+    QImage* openSecondImage();
 
     ImageModifier *im;
     void filterDesaturate();
