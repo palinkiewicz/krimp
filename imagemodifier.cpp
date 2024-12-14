@@ -5,7 +5,7 @@
 ImageModifier::ImageModifier() {}
 
 int ImageModifier::trunc(int value) {
-    return qMax(qMin(value, 255), 0);
+    return qBound(0, value, 255);
 }
 
 void ImageModifier::desaturate(QImage* image) {
@@ -27,10 +27,16 @@ void ImageModifier::invertColors(QImage* image) {
         return;
     }
 
+    unsigned char changed[256];
+
+    for (int i = 0; i <= 255; i++) {
+        changed[i] = 255 - i;
+    }
+
     for (int x = 0; x < image->size().width(); x++) {
         for (int y = 0; y < image->size().height(); y++) {
             QRgb pixel = image->pixel(x, y);
-            image->setPixel(x, y, qRgb(255 - qRed(pixel), 255 - qGreen(pixel), 255 - qBlue(pixel)));
+            image->setPixel(x, y, qRgb(changed[qRed(pixel)], changed[qGreen(pixel)], changed[qBlue(pixel)]));
         }
     }
 }
@@ -41,19 +47,16 @@ void ImageModifier::adjustContrast(QImage* image, int contrast) {
     }
 
     double factor = (259.0 * ((double) contrast + 255.0)) / (255.0 * (259.0 - (double) contrast));
+    unsigned char changed[256];
+
+    for (int i = 0; i <= 255; i++) {
+        changed[i] = trunc((int) (factor * (double) (i - 128)) + 128);
+    }
 
     for (int x = 0; x < image->size().width(); x++) {
         for (int y = 0; y < image->size().height(); y++) {
             QRgb pixel = image->pixel(x, y);
-            image->setPixel(
-                x,
-                y,
-                qRgb(
-                    trunc((int) (factor * (double) (qRed(pixel) - 128)) + 128),
-                    trunc((int) (factor * (double) (qGreen(pixel) - 128)) + 128),
-                    trunc((int) (factor * (double) (qBlue(pixel) - 128)) + 128)
-                    )
-                );
+            image->setPixel(x, y, qRgb(changed[qRed(pixel)], changed[qGreen(pixel)], changed[qBlue(pixel)]));
         }
     }
 }
@@ -63,18 +66,16 @@ void ImageModifier::adjustBrightness(QImage* image, int brightness) {
         return;
     }
 
+    unsigned char changed[256];
+
+    for (int i = 0; i <= 255; i++) {
+        changed[i] = trunc(i + brightness);
+    }
+
     for (int x = 0; x < image->size().width(); x++) {
         for (int y = 0; y < image->size().height(); y++) {
             QRgb pixel = image->pixel(x, y);
-            image->setPixel(
-                x,
-                y,
-                qRgb(
-                    trunc(qRed(pixel) + brightness),
-                    trunc(qGreen(pixel) + brightness),
-                    trunc(qBlue(pixel) + brightness)
-                    )
-                );
+            image->setPixel(x, y, qRgb(changed[qRed(pixel)], changed[qGreen(pixel)], changed[qBlue(pixel)]));
         }
     }
 }
@@ -92,7 +93,7 @@ void ImageModifier::adjustSaturation(QImage *image, int saturation) {
             int h, s, l;
             color.getHsl(&h, &s, &l);
 
-            s = qBound(0, s + (saturation * 255 / 100), 255);
+            s = trunc(s + (saturation * 255 / 100));
             color.setHsl(h, s, l);
 
             image->setPixel(x, y, color.rgb());
